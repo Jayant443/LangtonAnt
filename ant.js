@@ -24,4 +24,16 @@ class Ant {
 		this.direction = (this.direction + 1) % 4;
 		flipTile(this.col, this.row);
 	}
+
+	getFrontTileColor() {
+		let fc = this.col;
+		let fr = this.row;
+		switch (this.direction) {
+			case 0: fr--; break;
+			case 1: fc++; break;
+			case 2: fr++; break;
+			case 3: fc--; break;
+		}
+		return flippedTiles.has(`${fc},${fr}`) ? "#888888" : "#FFFFFF";
+	}
 }
