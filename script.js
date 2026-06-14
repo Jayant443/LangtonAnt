@@ -10,6 +10,8 @@ let offsetY = 0;
 const flippedTiles = new Set();
 let ant = new Ant();
 
+const startBtn = document.getElementById("start-btn");
+
 function flipTile(col, row) {
 	const key = `${col},${row}`;
 	if (flippedTiles.has(key)) {
@@ -127,6 +129,16 @@ canvas.addEventListener("mousedown", e => {
 	dragging = true;
 	lastX = e.clientX;
 	lastY = e.clientY;
+});
+
+startBtn.addEventListener("click", () => {
+	if (ant._interval) {
+		ant.stopStepping();
+		startBtn.textContent = "Start";
+	} else {
+		ant.startStepping(50);
+		startBtn.textContent = "Stop";
+	}
 });
 
 window.addEventListener("mouseup", e => {
