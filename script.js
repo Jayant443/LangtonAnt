@@ -11,10 +11,18 @@ const flippedTiles = new Set();
 
 function flipTile(col, row) {
 	const key = `${col},${row}`;
-	if (flippedTiles.has(key)) return;
-	flippedTiles.add(key);
+	if (flippedTiles.has(key)) {
+		flippedTiles.delete(key);
+	} else {
+		flippedTiles.add(key);
+	}
 	draw();
 }
+
+const antImage = new Image();
+antImage.src = "assets/ant.jpg";
+
+let ant;
 
 function getSize() {
 	return cellSize * zoom;
@@ -54,6 +62,18 @@ function draw() {
 		ctx.lineTo(x + 0.5, canvas.height);
 	}
 	ctx.stroke();
+
+	if (antImage.complete && ant) {
+		const size = getSize();
+		const cx = ant.col * size - offsetX + size / 2;
+		const cy = ant.row * size - offsetY + size / 2;
+		const imgSize = size * 0.8;
+		ctx.save();
+		ctx.translate(cx, cy);
+		ctx.rotate(ant.direction * Math.PI / 2);
+		ctx.drawImage(antImage, -imgSize / 2, -imgSize / 2, imgSize, imgSize);
+		ctx.restore();
+	}
 }
 
 function resize() {
@@ -64,6 +84,20 @@ function resize() {
 
 window.addEventListener("resize", resize);
 resize();
+
+function initAnt() {
+	const size = getSize();
+	const col = Math.floor((canvas.width / 2 + offsetX) / size) + Math.floor(Math.random() * 5 - 2);
+	const row = Math.floor((canvas.height / 2 + offsetY) / size) + Math.floor(Math.random() * 5 - 2);
+	ant = new Ant(col, row);
+	draw();
+}
+
+if (antImage.complete) {
+	initAnt();
+} else {
+	antImage.onload = initAnt;
+}
 
 canvas.addEventListener("wheel", e => {
 	e.preventDefault();
