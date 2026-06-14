@@ -12,3 +12,36 @@ canvas {
     background: #111;
     cursor: grab;
 }
+
+#ui {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+}
+
+#start-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+}
+
+#start-btn:hover {
+    background: #45a049;
+}
+
+#step-counter {
+    font-family: monospace;
+    font-size: 14px;
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    padding: 6px 12px;
+    border-radius: 4px;
+}

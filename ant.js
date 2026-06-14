@@ -3,6 +3,8 @@ class Ant {
 		this.col = col;
 		this.row = row;
 		this.direction = 0;
+		this._interval = null;
+		this.steps = 0;
 	}
 
 	moveForward() {
@@ -12,6 +14,7 @@ class Ant {
 			case 2: this.row++; break;
 			case 3: this.col--; break;
 		}
+		this.steps++;
 		draw();
 	}
 
@@ -23,6 +26,28 @@ class Ant {
 	turnRight() {
 		this.direction = (this.direction + 1) % 4;
 		flipTile(this.col, this.row);
+	}
+
+	step() {
+		const currentGray = flippedTiles.has(`${this.col},${this.row}`);
+		if (currentGray) {
+			this.turnLeft();
+		} else {
+			this.turnRight();
+		}
+		this.moveForward();
+	}
+
+	startStepping(ms = 100) {
+		if (this._interval) return;
+		this._interval = setInterval(() => this.step(), ms);
+	}
+
+	stopStepping() {
+		if (this._interval) {
+			clearInterval(this._interval);
+			this._interval = null;
+		}
 	}
 
 	getFrontTileColor() {

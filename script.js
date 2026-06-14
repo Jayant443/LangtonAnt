@@ -8,6 +8,7 @@ let offsetX = 0;
 let offsetY = 0;
 
 const flippedTiles = new Set();
+let ant = new Ant();
 
 function flipTile(col, row) {
 	const key = `${col},${row}`;
@@ -22,14 +23,16 @@ function flipTile(col, row) {
 const antImage = new Image();
 antImage.src = "assets/ant.jpg";
 
-let ant;
-
 function getSize() {
 	return cellSize * zoom;
 }
 
+const stepCounter = document.getElementById("step-counter");
+
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	if (ant) stepCounter.textContent = `Steps: ${ant.steps}`;
 
 	const size = getSize();
 
@@ -93,11 +96,8 @@ function initAnt() {
 	draw();
 }
 
-if (antImage.complete) {
-	initAnt();
-} else {
-	antImage.onload = initAnt;
-}
+initAnt();
+antImage.onload = () => draw();
 
 canvas.addEventListener("wheel", e => {
 	e.preventDefault();
